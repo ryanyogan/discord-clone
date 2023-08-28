@@ -1,6 +1,8 @@
 "use client";
 
+import { createServer } from "@/actions/create-server";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -27,6 +29,7 @@ const formSchema = z.object({
 });
 
 export default function InitialModal() {
+  const router = useRouter();
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
@@ -44,7 +47,17 @@ export default function InitialModal() {
   const isLoading = form.formState.isSubmitting;
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+    try {
+      await createServer({
+        name: values.name,
+        imageUrl: values.imageUrl,
+      });
+
+      form.reset();
+      router.refresh();
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   if (!isMounted) {
