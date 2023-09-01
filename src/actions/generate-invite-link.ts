@@ -30,7 +30,7 @@ export async function generateInviteLink({ serverId }: Params) {
       },
     });
 
-    revalidatePath(`servers/${server.id}`);
+    revalidatePath(`/`);
 
     return server;
   } catch (error: any) {
