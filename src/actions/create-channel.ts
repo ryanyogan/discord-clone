@@ -7,7 +7,7 @@ import { ChannelType, MemberRole } from "@prisma/client";
 interface CreateChannelProps {
   name: string;
   type: ChannelType;
-  serverId: string | string[];
+  serverId: string | undefined;
 }
 
 export async function createChannel({

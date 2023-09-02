@@ -30,7 +30,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useModal } from "../hooks/use-modal-store";
 
 const formSchema = z.object({
@@ -46,9 +46,8 @@ const formSchema = z.object({
 });
 
 export const CreateChannelModal = () => {
-  const { isOpen, onClose, type } = useModal();
+  const { isOpen, onClose, type, data } = useModal();
   const router = useRouter();
-  const params = useParams();
 
   const isModalOpen = isOpen && type === "createChannel";
 
@@ -64,10 +63,11 @@ export const CreateChannelModal = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
+      const { server } = data;
       await createChannel({
         name: values.name,
         type: values.type,
-        serverId: params?.serverId,
+        serverId: server?.id,
       });
 
       form.reset();
